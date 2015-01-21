@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+	<!-- constant name="struts.enable.DynamicMethodInvocation" value="false" 
+		/ -->
+	<!-- constant name="struts.custom.i18n.resources" value="mess" / -->
+	<constant name="struts.devMode" value="true" />
+	<!-- 允许ngnl调用java静态类和方法 -->
+	<!-- <constant name="struts.ognl.allowStaticMethodAccess" value="true"></constant> -->
+
+	<!-- 指定Web应用的默认编码，相当于调用request的setCharacterEncoding方法 -->
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+
+	<package name="sbinfo" extends="json-default" namespace="/">
+		<action name="iSexistName" class="baseAspectj" method="checkname">
+			<result name="success" type="json">
+				<param name="defaultEncoding">UTF-8</param>
+				<param name="root">exitname</param><!-- 这里的resstr 就是Action里面对应的属性值 -->
+			</result>
+			<result name="error">
+				<param name="location">/WEB-INF/error.jsp</param>
+			</result>
+
+		</action>
+		<action name="iSexistEmail" class="baseAspectj" method="checkemail">
+			<result name="success" type="json">
+				<param name="defaultEncoding">UTF-8</param>
+				<param name="root">existemail</param><!-- 这里的existemail 就是Action里面对应的属性值 -->
+			</result>
+			<result name="error">
+				<param name="location">/error.jsp</param>
+			</result>
+
+		</action>
+		<action name="checkcode" class="baseAspectj" method="checkcode">
+			<result name="success" type="json">
+				<param name="defaultEncoding">UTF-8</param>
+				<param name="root">checkcode</param><!-- 这里的checkcode 就是Action里面对应的属性值 -->
+			</result>
+			<result name="error">
+				<param name="location">/error.jsp</param>
+			</result>
+
+		</action>
+	</package>
+
+	<package name="default" namespace="/" extends="struts-default">
+		<!-- <default-interceptor-ref name="defaultStack" /> --><!-- 配置默认拦截器栈 -->
+		<!-- 默认action配置 -->
+		<!-- <default-action-ref name="index" /> <global-results> <result name="error">/WEB-INF/error.jsp</result> 
+			</global-results> <global-exception-mappings> <exception-mapping exception="java.lang.Exception" 
+			result="error"/> </global-exception-mappings -->
+		<!-- 拦截器必须放在action的前面 -->
+		<!--<interceptors>
+			<interceptor name="myinter" class="chen.interceptor.MyInterceptor" />
+
+		</interceptors> -->
+
+		<!-- 此处写Spring中LoginAction的对象在Spring中的名字 ,看LoginAction的annotation -->
+		<!-- 注意 <result name="success">中success需要小写 -->
+		<action name="profile" class="profileAction">
+			<result name="success">WEB-INF/bbs/frame-profile.jsp</result>
+			
+		</action>
+
+
+		<action name="index" class="index" method="clickforward">
+			<result name="index" type="redirect">/</result>
+		</action>
+
+
+		<!--  <action name="taction" class="topicaction">
+			<result name="success">/bbs/listtopic.jsp</result>
+		</action>
+        -->
+        
+		<action name="tpartaction" class="topicaction" method="findTopicListByBoardId">
+			<result name="success">WEB-INF/bbs/frame-topic.jsp</result>
+			<result name="error">WEB-INF/bbs/frame-error.jsp</result>
+		</action>
+
+
+		<action name="listtopic" class="topicaction" method="findTopicByUid">
+			<result name="success">WEB-INF/bbs/frame-person.jsp</result>
+			<result name="error">WEB-INF/bbs/frame-error.jsp</result>
+		</action>
+
+		<action name="singletopic" class="topicaction" method="singletopic">
+			<result name="singletopic">WEB-INF/bbs/frame-singletopic.jsp</result>
+			<result name="error">WEB-INF/bbs/frame-error.jsp</result>
+		</action>
+
+
+		<action name="login" class="loginaction">
+			<result name="login">WEB-INF/bbs/frame-login.jsp</result>
+			<result name="error">WEB-INF/bbs/frame-error.jsp</result>
+			
+			<!-- type="redirect"不能少,否则会提示找不到 -->
+			<result name="index" type="redirect">/</result>
+			<result name="success">WEB-INF/bbs/frame-loginsuccess.jsp</result>
+		</action>
+
+
+		<action name="loginout" class="loginaction" method="loginOut">
+
+			<result name="index" type="redirect">/</result>
+			<result name="error">/error.jsp</result>
+		</action>
+
+
+
+		<!-- 用于注册 -->
+		<action name="reg" class="userreg" method="userRegistr">
+
+			<result name="error">WEB-INF/bbs/frame-error.jsp</result>
+			<result name="register">WEB-INF/bbs/frame-register.jsp</result>
+			<result name="success">WEB-INF/bbs/frame-regsuccess.jsp</result>
+			<result name="index">index.jsp</result>
+			<result name="test">debug.jsp</result>
+			<!-- <interceptor-ref name="myinter" /> -->
+		</action>
+
+
+
+
+		<action name="baction" class="boardaction">
+			<result name="input">/login.jsp</result>
+			<result name="error">/error.jsp</result>
+			<result name="success">/index.jsp</result>
+		</action>
+
+		<!-- Random验证码 -->
+		<action name="rand" class="veriaction">
+			<result type="stream" name="success">
+				<param name="contentType">image/jpeg</param>
+				<param name="inputName">inputStream</param>
+			</result>
+			<result name="error">WEB-INF/bbs/frame-error.jsp</result>
+			<result name="test">debug.jsp</result>
+		</action>
+
+
+		<!-- 这个必须放在最后,匹配任意action -->
+		<action name="*" class="index">
+			<result name="index">index.jsp</result>
+			<result name="test">debug.jsp</result>
+			<result name="error">/WEB-INF/error.jsp</result>
+			<result name="success">index.jsp</result>
+		</action>
+	</package>
+
+
+</struts>

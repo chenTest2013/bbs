@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-12-16 12:55:49 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="chen.entity.User" table="USER">
+		<id name="id" type="int">
+			<column name="userid" />
+			<generator class="hilo" />
+		</id>
+
+		<property name="name" type="java.lang.String">
+			<column name="NAME" />
+		</property>
+		<property name="pass" type="java.lang.String">
+			<column name="PASS" />
+		</property>
+		<property name="grade" type="int">
+			<column name="GRADE" />
+		</property>
+		<property name="state" type="int">
+			<column name="STATE" />
+		</property>
+		<property name="point" type="int">
+			<column name="POINT" />
+		</property>
+		<property name="sex" type="java.lang.String">
+			<column name="SEX" />
+		</property>
+		<property name="email" type="java.lang.String">
+			<column name="EMAIL" />
+		</property>
+
+		<many-to-one name="role" class="chen.entity.Role" fetch="join"><!-- 
+				注意配置的顺序 -->
+			<column name="role_id" />
+		</many-to-one>
+
+
+		<component name="info" class="chen.entity.Information"><!-- 组件 -->
+			<property name="nickname" type="java.lang.String" />
+			<property name="regdate" type="java.util.Date" />
+			<property name="logindate" type="java.util.Date" />
+
+		</component>
+
+
+		<set name="scomm" inverse="true">
+			<key column="userid" />
+			<one-to-many class="chen.entity.Comment" />
+		</set>
+
+
+		<set name="stop" inverse="true">
+			<key column="userid" /><!--这个userid会加在了topic表中 -->
+			<one-to-many class="chen.entity.Topic" />
+		</set>
+
+		<union-subclass name="chen.entity.BoardMaster" table="boardMaster">
+			<set name="boards" inverse="true"><!-- 一的一端不控制关联关系 -->
+				<key column="boardMaster_ID" />
+				<one-to-many class="chen.entity.Board" />
+			</set>
+		</union-subclass>
+
+
+		<union-subclass name="chen.entity.Administrator" table="administrator">
+		</union-subclass>
+
+
+
+	</class>
+
+</hibernate-mapping>

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-12-17 16:53:55 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="chen.entity.Authority" table="AUTHORITY">
+		<id name="id" type="int">
+			<column name="ID" />
+			<generator class="identity" />
+		</id>
+
+		<many-to-one name="u" class="chen.entity.User" fetch="join">
+			<column name="userid" />
+		</many-to-one>
+
+		<many-to-one name="board" class="chen.entity.Board" fetch="join">
+			<column name="BOARD_id" />
+		</many-to-one>
+
+
+
+		<many-to-one name="topic" class="chen.entity.Topic" fetch="join">
+			<column name="TOPIC_id" />
+		</many-to-one>
+
+
+
+		<property name="user_boardstate" type="int">
+			<column name="USER_BOARDSTATE" />
+		</property>
+		<property name="user_topicstate" type="int">
+			<column name="USER_TOPICSTATE" />
+		</property>
+
+
+
+
+
+
+
+	</class>
+</hibernate-mapping>

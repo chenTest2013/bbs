@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- Spring配置文件的根元素，使用spring-beans-3.0.xsd语义约束 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+	">
+	
+	<!-- 打开Spring的Annotation的支持 -->
+	<context:annotation-config />
+	<!-- 设定Spring去哪些包中找Annotation -->
+	<context:component-scan
+		base-package="chen.test">
+		<context:include-filter type="annotation"
+			expression="org.aspectj.lang.annotation.Aspect" /><!-- -->
+	</context:component-scan>
+	
+	
+	
+	<!-- 启用Spring对@AspectJ的支持 proxy-target-class="true"这个使用CGLIB代理需要配置,主要是为action增强 -->
+	<!-- 方式1    expose-proxy="true"  开启暴露Aop代理到ThreadLocal支持
+	<aop:aspectj-autoproxy expose-proxy="true"/> -->
+	<!-- 方式2 -->
+	<bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator" >
+	  <!--
+	   exposeProxy开启暴露Aop代理到ThreadLocal支持
+	   <property name="exposeProxy" value="true" /> -->
+		
+   </bean>
+   
+  <bean  class="chen.util.MyBeanPostProcessor"> </bean>
+</beans>
