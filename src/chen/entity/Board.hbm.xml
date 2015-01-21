@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-12-16 12:55:15 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="chen.entity.Board" table="BOARD">
+		<id name="id" type="int">
+			<column name="ID" />
+			<generator class="identity" />
+		</id>
+		<property name="name" type="java.lang.String">
+			<column name="NAME" />
+		</property>
+		<many-to-one name="bm" class="chen.entity.BoardMaster"
+			fetch="join">
+			<column name="boardMaster_ID" />
+		</many-to-one>
+
+		<set name="stopic" inverse="true">
+			<key column="board_id" />
+			<one-to-many class="chen.entity.Topic" />
+		</set>
+
+	</class>
+</hibernate-mapping>
