@@ -155,13 +155,13 @@ public class RegAction extends ActionSupport {
 
 		} else {
 			this.setMessage("验证码错误");
-			// System.out.println("132");
+			System.out.println("132master?");
 			this.setSkipstr(ERROR);
 			return false;
 		}
 	}
 
-	// 注册前用户状态检查
+	//  注册前用户状态检查
 	private boolean checkReg() {//只考虑非正常流程
 		if (!this.useriflogin()) {// 判断是否有用户登录
 			if (this.checkreginfo() != 5) {
@@ -177,9 +177,9 @@ public class RegAction extends ActionSupport {
 				this.setSkipstr(ERROR);
 				ActionContext.getContext().getSession().put("message", this.message);
 
-				//System.out.println("169");
-
 				System.out.println("169");
+
+				
 
 
 			} else {
