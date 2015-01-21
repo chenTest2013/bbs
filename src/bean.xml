@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- Spring配置文件的根元素，使用spring-beans-3.0.xsd语义约束 -->
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<!-- 定义数据源Bean，使用C3P0数据源实现 -->
+
+	<!-- 定义Hibernate的SessionFactory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<!-- 依赖注入数据源，注入正是上面定义的dataSource -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- mappingResouces属性用来列出全部映射文件 -->
+		<property name="mappingResources">
+			<list>
+				<!-- 以下用来列出Hibernate映射文件 -->
+				<value>chen/entity/Person.hbm.xml</value>
+			</list>
+		</property>
+		<!-- 定义Hibernate的SessionFactory的属性 -->
+		<property name="hibernateProperties">
+			<!-- 配置Hibernate属性 -->
+			<value>
+				hibernate.dialect=org.hibernate.dialect.MySQL5Dialect;
+				hibernate.hbm2ddl.auto=create;
+				hibernate.show_sql=true;
+				hibernate.format_sql=true;
+				hibernate.temp.use_jdbc_metadata_defaults=false;
+			</value>
+		</property>
+	</bean>
+	<!-- 定义DAO Bean -->
+	<bean id="personDao" class="chen.dao.impl.PersonDaoImpl">
+		<!-- 注入持久化操作所需的SessionFactory -->
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+</beans>

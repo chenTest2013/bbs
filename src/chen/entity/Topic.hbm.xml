@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-12-16 21:17:17 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="chen.entity.Topic" table="TOPIC">
+		<id name="id" type="int">
+			<column name="ID" />
+			<generator class="identity" />
+		</id>
+		<property name="title" type="java.lang.String">
+			<column name="TITLE" />
+		</property>
+		<property name="content" type="java.lang.String">
+			<column name="CONTENT" />
+		</property>
+
+		<many-to-one name="state" class="chen.entity.TopicState"
+			fetch="join">
+			<column name="topicState_id" />
+		</many-to-one>
+		<many-to-one name="u" class="chen.entity.User" fetch="join">
+			<column name="userid" /><!-- 这个userid会加在了topic表中 -->
+		</many-to-one>
+		<many-to-one name="b" class="chen.entity.Board" fetch="join">
+			<column name="board_id" />
+		</many-to-one>
+
+		<set name="c" inverse="true"><!-- 一的一端不控制关联关系 -->
+			<key column="topic_id" />
+			<one-to-many class="chen.entity.Comment" />
+		</set>
+		<property name="date" type="java.util.Date">
+			<column name="DATE" />
+		</property>
+		<property name="view" type="int">
+			<column name="VIEW" />
+		</property>
+	</class>
+</hibernate-mapping>
