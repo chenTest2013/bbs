@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-12-17 19:06:55 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="chen.entity.Role" table="ROLE">
+		<id name="id" type="int">
+			<column name="roleID" />
+			<generator class="hilo" />
+		</id>
+		<property name="name" type="java.lang.String">
+			<column name="NAME" />
+		</property>
+
+		<set name="u" table="USER" inverse="false" lazy="true"><!-- 这个必须在union-subclass的前面 -->
+			<key>
+				<column name="role_id" />
+			</key>
+			<one-to-many class="chen.entity.User" />
+		</set>
+
+
+		<union-subclass name="chen.entity.MangerType" table="mangertype">
+		</union-subclass>
+
+
+
+	</class>
+</hibernate-mapping>
